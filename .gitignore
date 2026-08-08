@@ -46,3 +46,10 @@ desktop.ini
 .eslintcache
 *.tmp
 *.temp
+
+# Prettier
+.prettierrc
+.prettierrc.*
+.prettierignore
+prettier.config.*
+
