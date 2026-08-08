@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Listing = require('../models/listing');
-const initData = require('./data.js')
+const initData = require('./data.js');
 
 let mongo_URL = 'mongodb://127.0.0.1:27017/wanderlust';
 
@@ -14,10 +14,10 @@ async function main() {
   await mongoose.connect(mongo_URL);
 }
 
-const initDB = async() => {
-    await Listing.deleteMany({});
-    await Listing.insertMany(initData.data)
-    console.log("Data was initialized")
-}
+const initDB = async () => {
+  await Listing.deleteMany({});
+  await Listing.insertMany(initData.data);
+  console.log('Data was initialized');
+};
 
 initDB();
