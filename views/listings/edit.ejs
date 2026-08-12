@@ -4,7 +4,12 @@
   <div class="col-8 offset-2">
     <br /><br />
     <h3>Edit Your Listing</h3>
-    <form method="post" action="/listings/<%= listing.id %>?_method=PUT">
+    <form
+      method="post"
+      action="/listings/<%= listing.id %>?_method=PUT"
+      novalidate
+      class="needs-validation"
+    >
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input
@@ -13,7 +18,10 @@
           placeholder="Enter the title"
           type="text"
           class="form-control"
+          required
         />
+        <div class="valid-feedback">Title looks good!</div>
+        <div class="invalid-feedback">Please Provide a title</div>
       </div>
 
       <div class="mb-3">
@@ -22,20 +30,23 @@
           name="listing[description]"
           placeholder="Enter a description"
           type="text"
-          class="form-control"
+          class="form-control" required
         >
         <%= listing.description %>
         </textarea>
+        <div class="invalid-feedback">Please enter a short description</div>
       </div>
 
       <div class="mb-3">
         <label for="image" class="form-label">Image</label>
         <input
-          name="listing[image]"
+          name="listing[image][url]"
           value="<%= listing.image.url %>"
           type="text"
           class="form-control"
+          required
         />
+        <div class="invalid-feedback">Please enter a valid Imgae URL</div>
       </div>
 
       <div class="row">
@@ -47,7 +58,9 @@
             placeholder="Enter the price"
             type="number"
             class="form-control"
+            required
           />
+          <div class="invalid-feedback">Please provide valid Price</div>
         </div>
         <div class="mb-3 col-md-4">
           <label for="country" class="form-label">Country</label>
@@ -57,7 +70,11 @@
             placeholder="Enter the country"
             type="text"
             class="form-control"
+            required
           />
+          <div class="invalid-feedback">
+            Please provide valid a Country name
+          </div>
         </div>
       </div>
 
@@ -69,7 +86,9 @@
           placeholder="Enter the location"
           type="text"
           class="form-control"
+          required
         />
+        <div class="invalid-feedback">Please provide a valid Location</div>
       </div>
       <button class="btn btn-dark edit-btn col-1">Edit</button>
       <br /><br />
