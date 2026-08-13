@@ -7,6 +7,7 @@ const methodOverride = require("method-override");
 const engine = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync");
 const ExpressError = require("./utils/ExpressError");
+const listingSchema = require("./schema.js");
 
 let mongo_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
@@ -33,6 +34,16 @@ app.get("/", (req, res) => {
   res.send("Working.");
 });
 
+const validateListing = (req, res, next) => {
+  let {error} = listingSchema.validate(req.body);
+  if (error) {
+    let errMsg = error.details.map((el) => el.message).join(',')
+    throw new ExpressError(400, errMsg);
+  } else {
+    next();
+  }
+};
+
 //Index Route
 app.get(
   "/listings",
@@ -49,10 +60,8 @@ app.get("/listings/new", (req, res) => {
 
 app.post(
   "/listings",
+  validateListing,
   wrapAsync(async (req, res, next) => {
-    if (!req.body.listing) {
-      next(new ExpressError(400, "Send valid data for listing")); 
-    }
     const newListing = new Listing(req.body.listing);
     await newListing.save();
     res.redirect("/listings");
@@ -117,7 +126,7 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Something went wrong." } = err;
-  res.render('error.ejs', {message})
+  res.render("error.ejs", { message });
 });
 
 app.listen(8080, () => {
