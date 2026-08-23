@@ -4,7 +4,7 @@
   <div class="row row-cols-lg-3">
     <%for(listing of allListings){ %>
     <a href="/listings/<%= listing.id %>" style="text-decoration: none">
-      <div class="card col">
+      <div class="card col card-listing">
         <img
           src="<%= listing.image.url %>"
           class="card-img-top"
