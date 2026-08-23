@@ -8,6 +8,7 @@ const engine = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync");
 const ExpressError = require("./utils/ExpressError");
 const listingSchema = require("./schema.js");
+const Review = require("./models/review");
 
 let mongo_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
@@ -106,6 +107,18 @@ app.delete(
     res.redirect("/listings");
   }),
 );
+
+app.post('/listings/:id/review', async(req, res) => {
+  let listing = await Listing.findById(req.params.id);
+  let newReview = new Review(req.body.review);
+
+  listing.review.push(newReview);
+
+  await listing.save();
+  await newReview.save();
+
+  res.redirect(`/listings/${listing._id}`)
+})
 
 // app.get('/testListing', async(req, res) => {
 //   let sampleList =new Listing({
