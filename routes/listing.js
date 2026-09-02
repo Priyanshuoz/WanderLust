@@ -1,82 +1,57 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync");
-const { listingSchema, reviewSchema } = require("../schema.js");
+const { listingSchema } = require("../schema.js");
 const Listing = require("../models/listing");
 const ExpressError = require("../utils/ExpressError");
-
-
-const validateListing = (req, res, next) => {
-  let { error } = listingSchema.validate(req.body);
-  if (error) {
-    let errMsg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(400, errMsg);
-  } else {
-    next();
-  }
-};
+const {
+  isLoggedIn,
+  isLoggesIn,
+  isOwner,
+  validateListing,
+} = require("../middleware.js");
+const listingControler = require("../controller/listings.js");
 
 //Index Route
-router.get(
-  "/",
-  wrapAsync(async (req, res) => {
-    let allListings = await Listing.find();
-    res.render("listings/index", { allListings });
-  }),
-);
+router.get("/", wrapAsync(listingControler.index));
 
 //New Route
-router.get("/new", (req, res) => {
+router.get("/new", isLoggesIn, (req, res) => {
   res.render("listings/new.ejs");
 });
 
 router.post(
   "/",
+  isLoggesIn,
   validateListing,
-  wrapAsync(async (req, res, next) => {
-    const newListing = new Listing(req.body.listing);
-    await newListing.save();
-    res.redirect("/listings");
-  }),
+  wrapAsync(listingControler.renderNewForm),
 );
 
 //Show Route
-router.get(
-  "/:id",
-  wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    const listing = await Listing.findById(id).populate("review");
-    res.render("listings/show.ejs", { listing });
-  }),
-);
+router.get("/:id", wrapAsync(listingControler.showListing));
 
 //Edit Route
 router.get(
   "/:id/edit",
-  wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    const listing = await Listing.findById(id);
-    res.render("listings/edit.ejs", { listing });
-  }),
+  isLoggesIn,
+  isOwner,
+  wrapAsync(listingControler.createListing),
 );
 
 router.put(
   "/:id",
-  wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-    res.redirect(`/listings/${id}`);
-  }),
+  isLoggesIn,
+  isOwner,
+  validateListing,
+  wrapAsync(listingControler.updateListing),
 );
 
 //Delete Route
 router.delete(
   "/:id",
-  wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    await Listing.findByIdAndDelete(id);
-    res.redirect("/listings");
-  }),
+  isLoggesIn,
+  isOwner,
+  wrapAsync(listingControler.destroyLisitng),
 );
 
 module.exports = router;
