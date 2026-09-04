@@ -109,3 +109,24 @@ body {
 .btns{
   display: flex;
 }
+
+#filter {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .filter {
+    text-align: center;
+    margin-top: 1rem;
+    margin-left: 2rem;
+    opacity: 0.8;
+  }
+
+  .filter:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+
+  .filter p {
+    font-size: 0.8rem;
+  }

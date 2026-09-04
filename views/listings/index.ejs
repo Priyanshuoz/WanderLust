@@ -1,6 +1,47 @@
 <% layout('/layouts/boilerplate') %>
 <body>
-  <h3>All Listings</h3>
+  <div id="filter">
+    <div class="filter">
+      <i class="fa-solid fa-fire"></i>
+      <p>Trending</p>
+    </div>
+    <div class="filter">
+      <i class="fa-solid fa-bed"></i>
+      <p>Special Room</p>
+    </div>
+    <div class="filter">
+      <i class="fa-solid fa-mountain-sun"></i>
+      <p>Moutains</p>
+    </div>
+    <div class="filter">
+      <i class="fa-solid fa-mountain-city"></i>
+      <p>Moutains city</p>
+    </div>
+    <div class="filter">
+      <i class="fa-solid fa-snowflake"></i>
+      <p>Snowy Area</p>
+    </div>
+    <div class="filter">
+      <i class="fa-solid fa-person-swimming"></i>
+      <p>Pool bnb</p>
+    </div>
+    <div class="filter">
+      <i class="fa-solid fa-wine-glass"></i>
+      <p>Party House</p>
+    </div>
+    <div class="filter">
+      <i class="fa-solid fa-futbol"></i>
+      <p>Fun play</p>
+    </div>
+    <div class="filter">
+      <i class="fa-solid fa-cow"></i>
+      <p>Farm</p>
+    </div>
+    <div class="filter">
+      <i class="fa-solid fa-campground"></i>
+      <p>Camping</p>
+    </div>
+  </div>
   <div class="row row-cols-lg-3">
     <%for(listing of allListings){ %>
     <a href="/listings/<%= listing.id %>" style="text-decoration: none">
