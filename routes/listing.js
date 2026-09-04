@@ -11,11 +11,19 @@ const {
   validateListing,
 } = require("../middleware.js");
 const listingControler = require("../controller/listings.js");
+const multer = require("multer");
+const { storage } = require("../cloudConfig.js");
+const upload = multer({ storage });
 
 router
   .route("/")
   .get(wrapAsync(listingControler.index))
-  .post(isLoggesIn, validateListing, wrapAsync(listingControler.renderNewForm));
+  .post(
+    isLoggesIn,
+    validateListing,
+    upload.single("listing[image]"),
+    wrapAsync(listingControler.renderNewForm),
+  );
 
 //New Route
 router.get("/new", isLoggesIn, (req, res) => {
